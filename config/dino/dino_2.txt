@@ -1,0 +1,16 @@
+datadir = ../../../data/real360/dino_2
+logdir = ./log2/dino_2_step4
+
+fov = 360
+lr_t_init = 1e-3
+lr_env = 0
+lr_dyn = 0
+lr_dyn_mlp = 0
+fin_alpha_block = 1
+
+frame_step = 4
+
+loss_depth_weight_inital = 0.1
+loss_flow_weight_inital = 1
+
+device = 'cuda:5'

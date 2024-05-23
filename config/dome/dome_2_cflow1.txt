@@ -1,0 +1,9 @@
+datadir = ../../data/real360/dome_2
+logdir = ./log/dome_2_cflow1
+
+fov = 360
+lr_t_init = 1e-3
+loss_depth_weight_inital = 0
+loss_flow_weight_inital = 1
+
+device = 'cuda:4'

@@ -1,0 +1,28 @@
+datadir = ../../../data/real360/real_bell
+logdir = ./log3/real_bell_2_localrf
+with_preprocessed_poses = 0
+
+fov = 360
+BRDF = 0
+lr_t_init = 5e-3
+lr_env = 0
+lr_dyn = 0
+lr_dyn_mlp = 0
+fin_alpha_block = 0
+
+env_size = 512
+
+frame_step = 4
+loss_depth_weight_inital = 0
+loss_flow_weight_inital = 0
+loss_beta_dist = 1e-3
+loss_dyn_weight = 0
+loss_dyn_binary = 0
+reg_edge = 0
+
+TV_weight_density = 1
+TV_weight_app = 0.1
+TV_dyn = 3e-2
+
+
+device = 'cuda:2'

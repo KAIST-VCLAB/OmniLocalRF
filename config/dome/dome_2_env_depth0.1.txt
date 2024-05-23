@@ -1,0 +1,13 @@
+datadir = ../../../data/real360/dome_2
+logdir = ./log/dome_2_env5_depth0.1_step4
+
+fov = 360
+env_size = 1080
+lr_t_init = 1e-3
+lr_env = 1e-1
+frame_step = 4
+
+loss_depth_weight_inital = 0.1
+loss_flow_weight_inital = 0
+
+device = 'cuda:5'
