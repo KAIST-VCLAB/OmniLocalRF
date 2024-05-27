@@ -1,28 +1,30 @@
-# Progressively Optimized Local Radiance Fields for Robust View Synthesis
+# OmniLocalRF: Omnidirectional Local Radiance Fields from Dynamic Videos
 
-We present an algorithm for reconstructing the radiance field of a large-scale scene from a single casually captured video. The task poses two core challenges. First, most existing radiance field reconstruction approaches rely on accurate pre-estimated camera poses from Structure-from-Motion algorithms, which frequently fail on in-the-wild videos. Second, using a single, global radiance field with finite representational capacity does not scale to longer trajectories in an unbounded scene. For handling unknown poses, we jointly estimate the camera poses with radiance field in a progressive manner. We show that progressive optimization significantly improves the robustness of the reconstruction. For handling large unbounded scenes, we dynamically allocate new local radiance fields trained with frames within a temporal window. This further improves robustness (e.g., performs well even under moderate pose drifts) and allows us to scale to large scenes. Our extensive evaluation on the Tanks and Temples dataset and our collected outdoor dataset, Static Hikes, show that our approach compares favorably with the state-of-the-art.
+Omnidirectional cameras are extensively used in various applications to provide a wide field of vision. However, they face a challenge in synthesizing novel views due to the inevitable presence of dynamic objects, including the photographer, in their wide field of view. In this paper, we introduce a new approach called Omnidirectional Local Radiance Fields (OmniLocalRF) that can render static-only scene views, removing and inpainting dynamic objects simultaneously. Our approach combines the principles of local radiance fields with the bidirectional optimization of omnidirectional rays. Our input is an omnidirectional video, and we evaluate the mutual observations of the entire angle between the previous and current frames. To reduce ghosting artifacts of dynamic objects and inpaint occlusions, we devise a multi-resolution motion mask prediction module. Unlike existing methods that primarily separate dynamic components through the temporal domain, our method uses multi-resolution neural feature planes for precise segmentation, which is more suitable for long 360 videos. Our experiments validate that OmniLocalRF outperforms existing methods in both qualitative and quantitative metrics, especially in scenarios with complex real-world scenes. In particular, our approach eliminates the need for manual interaction, such as drawing motion masks by hand and additional pose estimation, making it a highly effective and efficient solution.
 
-### [Project page](https://localrf.github.io/) | [Paper](https://localrf.github.io/localrf.pdf) | [Data](https://drive.google.com/drive/folders/1kGY-VijIbXNsNb7ghEywi1fvkH4BaIEz?usp=share_link)
-[Andreas Meuleman](https://ameuleman.github.io), 
-[Yu-Lun Liu](https://www.cmlab.csie.ntu.edu.tw/~yulunliu), 
-[Chen Gao](http://chengao.vision), 
-[Jia-Bin Huang](https://jbhuang0604.github.io), 
-[Changil Kim](https://changilkim.com), 
-[Min H. Kim](http://vclab.kaist.ac.kr/minhkim), 
-[Johannes Kopf](http://johanneskopf.de)
+### [Project page](https://vclab.kaist.ac.kr/cvpr2024p1) | [Paper](https://vclab.kaist.ac.kr/cvpr2024p1/OmniLocalRF.pdf) | [Data](https://)
+[Dongyoung Choi](https://vclab.kaist.ac.kr/dychoi), 
+[Hyeonjoong Jang](https://sites.google.com/view/hyeonjoong), 
+[Min H. Kim](http://vclab.kaist.ac.kr/minhkim)
+
+#### Input 360 videos
+![input](figure/input.gif)
+#### View synthesis results
+![output](figure/output.gif)
+
 
 ## Setup
-Tested with Pytorch 2.0 and CUDA 11.8 and ROCm 5.4.2 compute platforms.
+Tested with Pytorch 2.3.0 and CUDA 11.6 compute platforms.
 ```
-git clone --recursive https://github.com/facebookresearch/localrf && cd localrf
-conda create -n localrf python=3.8 -y
-conda activate localrf
+git clone --recursive https://github.com/KAIST-VCLAB/OmniLocalRF && cd OmniLocalRF
+conda create -n omnilocalrf python=3.8 -y
+conda activate omnilocalrf
 pip install torch torchvision # Replace here with the command from https://pytorch.org/ corresponding to your compute platform
 pip install tqdm scikit-image opencv-python configargparse lpips imageio-ffmpeg kornia lpips tensorboard imageio easydict matplotlib scipy==1.6.1 plyfile joblib timm
 ```
 
 ## Preprocessing
-Download the [hike scenes](https://drive.google.com/file/d/1DngTRNuZZXpho8-2cjpToa3lGWzxgwqL/view?usp=drive_link).
+Download the [real and synthetic 360 scenes](https://).
 
 We use [RAFT](https://github.com/princeton-vl/RAFT) and [DPT](https://github.com/isl-org/DPT) for flow and monocular depth prior.
 
@@ -31,32 +33,39 @@ Get pretrained weights.
 bash scripts/download_weights.sh
 ```
 
-Run flow and depth estimation (assuming sorted image files in `${SCENE_DIR}/images`).
+Run flow and depth estimation (assuming sorted image files in `${SCENE_DIR}/images`). We use `${frame_step}` 4 in real dataset and 1 for synthetic dataset.
 ```
-python scripts/run_flow.py --data_dir ${SCENE_DIR}
+python scripts/run_flow.py --data_dir ${SCENE_DIR} --frame_step ${frame_step}
 python DPT/run_monodepth.py --input_path ${SCENE_DIR}/images --output_path ${SCENE_DIR}/depth --model_type dpt_large
 ```
 
-Alternatively, run `scripts/preprocess_all.sh` to preprocess all hike scenes.
+Alternatively, run `scripts/preprocess_real.sh` and `scripts/preprocess_syn.sh` to preprocess all real and synthetic scenes respectively.
+```
+bash scripts/preprocess_real.sh
+bash scripts/preprocess_syn.sh
+```
+
 
 ## Optimization
+We can trian the model by parsing the config file in `config` folder. Please set the data and log directory `datadir, logdir` in the config file for training.
 ```
-python localTensoRF/train.py --datadir ${SCENE_DIR} --logdir ${LOG_DIR} --fov ${FOV}
+python src/train.py --config ${CONFIG_FILE}
 ```
-After training completion, test views and smoothed trajectories will be stored in `${LOG_DIR}`. We also provide `scripts/train_all.sh` to initiate optimization on several scenes.
+For example, we can train the `Yongsil` scene in the real dataset by `python src/train.py --config config/real/yongsil.txt`. After training completion, test views and smoothed trajectories will be stored in `logdir`.
 
 ## Citation
 ```
-@inproceedings{meuleman2023localrf,
-  author    = {Meuleman, Andreas and Liu, Yu-Lun and Gao, Chen and Huang, Jia-Bin and Kim, Changil and Kim, Min H. and Kopf, Johannes},
-  title     = {Progressively Optimized Local Radiance Fields for Robust View Synthesis},
-  booktitle = {CVPR},
-  year      = {2023},
-}
+@InProceedings{Choi_2024_CVPR,
+   author = {Dongyoung Choi and Hyeonjoong Jang and Min H. Kim},
+   title = {OmniLocalRF: Omnidirectional Local Radiance Fields from Dynamic Videos},
+   booktitle = {CVPR},
+   month = {June},
+   year = {2024}
+} 
 ```
 
 ## Acknowledgements
-The code is available under the MIT license and draws from [TensoRF](https://github.com/apchenstu/TensoRF) and [DynamicNeRF](https://github.com/gaochen315/DynamicNeRF), which are also licensed under the MIT license.
+The code is implemented based on the [LocalRF](https://github.com/facebookresearch/localrf) and is available under the MIT license. It also incorporates elements from [TensoRF](https://github.com/apchenstu/TensoRF) and [DynamicNeRF](https://github.com/gaochen315/DynamicNeRF), both of which are licensed under the MIT license.
 Licenses for these projects can be found in the `licenses/` folder.
 
 We use [RAFT](https://github.com/princeton-vl/RAFT) and [DPT](https://github.com/isl-org/DPT) for flow and monocular depth prior.

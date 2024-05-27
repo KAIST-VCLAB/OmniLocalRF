@@ -1,0 +1,30 @@
+datadir = ../../../data/omnilocalrf/real/red_building
+logdir = ./log/red_building
+with_preprocessed_poses = 0
+
+render_only = 0
+frame_step = 4
+bidirectional_optimization = 1
+n_iters_per_frame=600
+add_frames_every=100
+dyn_block_iter=500
+
+fov = 360
+lr_R_init = 5e-3
+lr_t_init = 5e-3
+lr_dyn = 1e-2
+lr_dyn_mlp = 5e-4
+fin_alpha_block = 0
+
+loss_depth_weight_inital = 0.01
+loss_flow_weight_inital = 1
+loss_beta_dist = 1e-3
+loss_dyn_weight = 1e-2
+loss_dyn_binary = 1e-1
+
+L1_weight = 1e-3
+TV_weight_density = 1
+TV_weight_app = 0.1
+TV_dyn = 3e-2
+
+device = 'cuda:0'

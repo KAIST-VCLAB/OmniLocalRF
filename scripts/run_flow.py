@@ -12,7 +12,7 @@ from RAFT.core.raft import RAFT
 from RAFT.core.utils.utils import InputPadder
 from RAFT.core.utils import flow_viz
 
-from localTensoRF.utils.utils import encode_flow
+from src.utils.utils import encode_flow
 
 import argparse
 import torch

@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.7.1-devel-ubuntu20.04
+FROM nvidia/cuda:11.6.1-devel-ubuntu20.04
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 ENV DEBIAN_FRONTEND=noninteractive
@@ -22,7 +22,7 @@ RUN echo "docker ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 RUN chown docker /opt/conda -R 
 USER docker
 
-# Setup localrf
+# Setup omnilocalrf
 RUN /opt/conda/bin/python -m ensurepip
 RUN /opt/conda/bin/python -m pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117
 RUN /opt/conda/bin/python -m pip install tqdm scikit-image opencv-python configargparse lpips imageio-ffmpeg kornia lpips tensorboard imageio easydict matplotlib scipy==1.6.1 kornia plyfile joblib timm
