@@ -2,7 +2,7 @@
 
 Omnidirectional cameras are extensively used in various applications to provide a wide field of vision. However, they face a challenge in synthesizing novel views due to the inevitable presence of dynamic objects, including the photographer, in their wide field of view. In this paper, we introduce a new approach called Omnidirectional Local Radiance Fields (OmniLocalRF) that can render static-only scene views, removing and inpainting dynamic objects simultaneously. Our approach combines the principles of local radiance fields with the bidirectional optimization of omnidirectional rays. Our input is an omnidirectional video, and we evaluate the mutual observations of the entire angle between the previous and current frames. To reduce ghosting artifacts of dynamic objects and inpaint occlusions, we devise a multi-resolution motion mask prediction module. Unlike existing methods that primarily separate dynamic components through the temporal domain, our method uses multi-resolution neural feature planes for precise segmentation, which is more suitable for long 360 videos. Our experiments validate that OmniLocalRF outperforms existing methods in both qualitative and quantitative metrics, especially in scenarios with complex real-world scenes. In particular, our approach eliminates the need for manual interaction, such as drawing motion masks by hand and additional pose estimation, making it a highly effective and efficient solution.
 
-### [Project page](https://vclab.kaist.ac.kr/cvpr2024p1) | [Paper](https://vclab.kaist.ac.kr/cvpr2024p1/OmniLocalRF.pdf) | [Data](https://)
+### [Project page](https://vclab.kaist.ac.kr/cvpr2024p1) | [Paper](https://vclab.kaist.ac.kr/cvpr2024p1/OmniLocalRF.pdf) | [Data](https://drive.google.com/drive/folders/1VmXVly1o5skg4JZsEKLQ3sGIxBjXczEG?usp=sharing)
 [Dongyoung Choi](https://vclab.kaist.ac.kr/dychoi), 
 [Hyeonjoong Jang](https://sites.google.com/view/hyeonjoong), 
 [Min H. Kim](http://vclab.kaist.ac.kr/minhkim)
@@ -24,7 +24,7 @@ pip install tqdm scikit-image opencv-python configargparse lpips imageio-ffmpeg 
 ```
 
 ## Preprocessing
-Download the [real and synthetic 360 scenes](https://).
+Download the [real and synthetic 360 scenes](https://drive.google.com/drive/folders/1VmXVly1o5skg4JZsEKLQ3sGIxBjXczEG?usp=sharing).
 
 We use [RAFT](https://github.com/princeton-vl/RAFT) and [DPT](https://github.com/isl-org/DPT) for flow and monocular depth prior.
 
