@@ -53,7 +53,7 @@ python src/train.py --config ${CONFIG_FILE}
 ```
 For example, we can train the `Yongsil` scene in the real dataset by `python src/train.py --config config/real/yongsil.txt`. After training completion, test views and smoothed trajectories will be stored in `logdir`. 
 
-Since we progressively optimize the radiance field blocks and increase the number of iterations with each block insertion, we cannot estimate the total number of iterations during training. However, it takes about 15K iterations for each dataset
+Since we progressively optimize the radiance field blocks and increase the number of iterations with each block insertion, we cannot estimate the total number of iterations during training. However, it takes about 150K iterations for each dataset
 
 ## Visualization
 We can see the intermediate results during training by tensorboard.
